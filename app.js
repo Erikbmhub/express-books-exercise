@@ -24,7 +24,7 @@ app.get("/last", (req, res) => {
 // Ejercicio 4 Crea una ruta /middle para obtener el libro en la mitad (número 50 en el array)
 // http://localhost:3000/middle
 app.get("/middle", (req, res) => {
-  const libro50 = books[49];
+  const libro50 = books[Math.floor(books.length / 2)];
   res.status(200).json(libro50);
 });
 // Ejercicio 5 Crea una ruta /author/dante-alighieri para obtener SÓLO EL TÍTULO del libro de Dante Alighieri
@@ -58,14 +58,16 @@ app.get("/year&pages/cervantes", (req, res) => {
   if (!libroCervantes) {
     return res.status(404).json({ message: "Libro no encontrado" });
   }
-  const paginasLibro = libroCervantes.pages;
-  const anioLibro = libroCervantes.year;
+  const {pages,year}= libroCervantes
+  const resultado = {pages,year}
+/* const anioLibro = libroCervantes.year;
   const resultado = { 
     pages : paginasLibro, 
     year : anioLibro 
-};
+  };
+  const paginasLibro = libroCervantes.pages;*/
   res.status(200).json(resultado);
-});
+}); 
 // Ejercicio 8 Crea una ruta /country/count/spain para obtener EL NÚMERO DE LIBROS de España
 // http://localhost:3000/country/count/spain
 app.get("/country/count/spain", (req, res) => {
@@ -74,16 +76,16 @@ app.get("/country/count/spain", (req, res) => {
         return res.status(404).json({message:"Libros no encontrados"});
     }
 const totalLibros = librosEspana.length;
-  res.status(200).json(totalLibros);
+    res.status(200).json(totalLibros);
 });
 // Ejercico 9 Crea una ruta /country/at-least/germany para obtener VERDADERO O FALSO dependiendo de si hay o no un libro de Alemania
 // http://localhost:3000/country/at-least/germany
 app.get("/country/at-least/germany", (req, res) => { 
 const librosAlemanes = books.find(book => book.country === "Germany")
 if (!librosAlemanes) { 
-    return res.send("False")
+    return res.status(404).send(false)
 }
-res.send("True")
+res.status(200).send(true)
 });
 // Ejercicio 10 Crea una ruta /pages/all-greater/200 para obtener VERDADERO O FALSO dependiendo de si todos los libros tienen más de 200 páginas
 // http://localhost:3000/pages/all-greater/200
